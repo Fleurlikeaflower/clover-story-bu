@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>แบบทดสอบสำหรับผู้กล้า</title>
+  <style>
+    body {
+      background: url('https://img2.pic.in.th/pic/main79340d27faadd528.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Kanit', sans-serif;
+      color: white;
+      padding: 2em;
+    }
+    .quiz-container {
+      background: rgba(0,0,0,0.7);
+      border-radius: 15px;
+      padding: 2em;
+      max-width: 1000px;
+      margin: auto;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .question {
+      margin-bottom: 1.5em;
+    }
+    button:hover{
+background-color: #DAA520;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 1em;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      background-color: gold;
+    }
+    #result {
+      text-align: center;
+      margin-top: 2em;
+      background: #222;
+      padding: 1em;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>ค้นหาอาชีพในโลก Clover Story ที่ดูจะเหมาะกับท่าน</h1>
+    <form id="quizForm">
+      <div class="question">
+        <h3>1. หากท่านสามารถครอบครองพลังวิเศษได้ 1 อย่าง ท่านอยากครอบครองพลังใด ?</h3>
+        <label><input type="radio" name="q1" value="A"> A. พลังสายฟ้าและพลังกล</label><br>
+        <label><input type="radio" name="q1" value="B"> B. สร้างเครื่องจักกลได้อย่างแม่นยำ</label><br>
+        <label><input type="radio" name="q1" value="C"> C. วิเคราะห์อนาคตและข้อมูล</label><br>
+        <label><input type="radio" name="q1" value="D"> D. สร้างสิ่งต่างๆผ่านจินตนาการ</label>
+      </div>
+      <div class="question">
+        <h3>2. หากท่านได้รับภารกิจต้องช่วยหมู่บ้านที่ประสบปัญหาเรื่องแสงสว่าง ให้กลับมามีแสงสว่างอีกครั้งนึง ท่านคิดว่าวิธีใดเหมาะสมกับท่านที่สุด ? หากภารกิจนี้ต้องทำร่วมกับนักผจญภัยคนอื่นๆ</h3>
+        <label><input type="radio" name="q2" value="A"> A. ใช้เวทย์สายฟ้าสร้างพลังงาน</label><br>
+        <label><input type="radio" name="q2" value="B"> B. ใช้หุ่นจักรกลซ่อมระบบ</label><br>
+        <label><input type="radio" name="q2" value="C"> C. วิเคราะห์ปัญหาอย่างเป็นระบบ</label><br>
+        <label><input type="radio" name="q2" value="D"> D. สื่อสารและสร้างสื่อแจ้งเตือน</label>
+      </div>
+      <div class="question">
+        <h3>3. หากท่านสามารถสร้างสิ่งหนึ่งให้กับโลกใบนี้ได้ ท่านปราถนาที่จะสร้างสิ่งใด ?</h3>
+        <label><input type="radio" name="q3" value="A"> A. อุปกรณ์เวทย์มนต์ช่วยชีวิต</label><br>
+        <label><input type="radio" name="q3" value="B"> B. หุ่นยนต์ทำงานอัตโนมัติ</label><br>
+        <label><input type="radio" name="q3" value="C"> C. ระบบพยากรณ์อันตราย</label><br>
+        <label><input type="radio" name="q3" value="D"> D. โลกเสมือนจริงเพื่อฝึกซ้อม</label>
+      </div>
+      <div class="question">
+        <h3>4. หากท่านอยู่ในสนามรบ ท่านต้องการมีบทบาทแบบใด ? ในตัวเลือกต่อไปนี้</h3>
+        <label><input type="radio" name="q4" value="A"> A. พุ่งโจมตีแนวหน้า</label><br>
+        <label><input type="radio" name="q4" value="B"> B. ซุ่มยิงศัตรูจากระยะไกล</label><br>
+        <label><input type="radio" name="q4" value="C"> C. ร่ายเวทย์และสนับสนุน</label><br>
+        <label><input type="radio" name="q4" value="D"> D. ถือโล่ปกป้องเพื่อนร่วมรบ</label>
+      </div>
+      <button type="button" onclick="calculateResult()">รับผลการทดสอบของท่าน</button>
+    </form>
+    <div id="result"></div>
+  </div>
+  <script>
+  function calculateResult() {
+    const form = document.getElementById("quizForm");
+    const formData = new FormData(form);
+    const resultEl = document.getElementById("result");
+    
+    // ตรวจสอบว่าตอบครบทั้ง 4 ข้อหรือไม่
+    const requiredQuestions = ['q1', 'q2', 'q3', 'q4'];
+    for (let question of requiredQuestions) {
+      if (!formData.get(question)) {
+        resultEl.innerHTML = `<p style="color: gold; font-size: 18px;">กรุณาตอบคำถามให้ครบทุกข้อก่อนรับผลการทดสอบ</p>`;
+        return;
+      }
+    }
+
+    // นับจำนวนตัวเลือก
+    const counts = { A: 0, B: 0, C: 0, D: 0 };
+    for (let [key, value] of formData.entries()) {
+      counts[value]++;
+    }
+
+    // หาค่าที่มากที่สุด
+    let top = Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0];
+
+    // แสดงผลลัพธ์
+    let job = "", desc = "", img = "";
+    if (top === "A") {
+      job = "นักดาบ";
+      desc = "ท่านเป็นผู้ที่กล้ารู้ กล้าลอง กล้าเสี่ยง ไม่ว่าอุปสรรคข้างหน้าจะเป็นอย่างไรท่านก็พร้อมฟาดฟันทุกสิ่ง!";
+      img = "https://img5.pic.in.th/file/secure-sv1/ClassArtwork_Hero_Destiny_Male.png";
+    } else if (top === "B") {
+      job = "นักธนู";
+      desc = "ท่านเป็นผู้ที่มีความเฉียบแหลมดั่งลูกธนูที่ยิงออกไป ทำให้ท่านนั้นเชี่ยวชาญเรื่องการวิเคราะห์และแม่นยำ!";
+      img = "https://img2.pic.in.th/pic/ClassArtwork_Bowmaster_Destiny_Female.png";
+    } else if (top === "C") {
+      job = "จอมเวทย์";
+      desc = "ท่านเป็นผู้ที่สามารถวิเคราะห์ทุกสิ่งบนโลกนี้ได้อย่างน่ามหรรศจรรย์ ไม่แปลกใจเลยที่มักจะหาสิ่งใหม่ๆทำอยู่เสมอ!";
+      img = "https://img2.pic.in.th/pic/ClassArtwork_Bishop_Destiny_Female.png";
+    } else if (top === "D") {
+      job = "ผู้ถือโล่️";
+      desc = "ท่านเป็นผู้ที่ประเสริฐมากทางความคิด สามารถสร้างสิ่งที่คิดออกมาได้อย่างน่าเหลือเชื่อ ทำให้ท่านนั้นมีบทบาทที่สำคัญมากในการออกรบ หากไม่มีท่านคงไม่มีชัยชนะ!";
+      img = "https://img5.pic.in.th/file/secure-sv1/ClassArtwork_Mihile_Ignition.png";
+    }
+
+    resultEl.innerHTML = `<h2>อาชีพของท่านคือ ${job}</h2><p>${desc}</p><img src="${img}" alt="${job}" style="max-width: 100%; border-radius: 10px;">`;
+  }
+</script>
+
+</body>
+</html>
