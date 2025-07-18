@@ -82,6 +82,32 @@ background-color: #DAA520;
     <div id="result"></div>
   </div>
   <script>
+  function sendDataToGoogleSheet(formData, result) {
+  const data = {
+    name: formData.get('name') || 'anonymous',  // ถ้ามีช่องกรอกชื่อ
+    q1: formData.get('q1'),
+    q2: formData.get('q2'),
+    q3: formData.get('q3'),
+    q4: formData.get('q4'),
+    result: result
+  };
+
+  fetch('https://script.google.com/macros/s/xxxxxxxxxx/exec', {  // เปลี่ยนเป็น URL ที่ได้จากข้อ 3
+    method: 'POST',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(res => res.json())
+  .then(response => {
+    console.log('Success:', response);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+}
+
   function calculateResult() {
     const form = document.getElementById("quizForm");
     const formData = new FormData(form);
